@@ -1,0 +1,59 @@
+@font-face { /*to download a font*/
+  font-family: Roboto;
+  src: url(../fonts/Roboto-Black.ttf) url(../fonts/Roboto-BlackItalic.ttf) url(../fonts/Roboto-Bold.ttf) url(../fonts/Roboto-BoldItalic.ttf) url(../fonts/Roboto-Italic.ttf) url(../fonts/Roboto-Light.ttf) url(../fonts/Roboto-LightItalic.ttf) url(../fonts/Roboto-Medium.ttf) url(../fonts/Roboto-MediumItalic.ttf) url(../fonts/Roboto-Regular.ttf) url(../fonts/Roboto-Thin.ttf) url(../fonts/Roboto-ThinItalic.ttf);
+}
+:root {
+  --dark-blue: #1A253A;
+  --dark-purple: #6c5b7b;
+  --off-white: #fffff7;
+  --dark-blue-hover: #e2e2d6;
+  --tan: #F9EBC7;
+  --coral: #FF7F50;
+  --coral-hover: #ff936c;
+  font-size: 62.5%;
+}
+body {
+  background-color: var(--off-white);
+}
+.wrapper-main {
+  width: 1100px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 2.6rem;
+  line-height: 1.5;
+  color: var(--dark-blue);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+h2 {
+  font-size: 2.0rem;
+  line-height: 1.5;
+  color: var(--dark-blue);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  text-transform: capitalize;
+  padding-top: 10px;
+}
+h3 {
+  font-size: 2.6rem;
+  line-height: 1.5;
+  color: var(--dark-blue);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+p {
+  font-size: 1.6rem;
+  line-height: 1.75;
+  color: var(--dark-blue);
+  font-family: 'Roboto', sans-serif;
+}
+a {
+  font-size: 1.6rem;
+  line-height: 1.75;
+  color: var(--dark-blue);
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+}
