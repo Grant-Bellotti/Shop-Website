@@ -3,6 +3,7 @@ const $productsHTML = $('.products');
 const $cartHTML = $('.cart-list');
 const $cartIcon = $('.icon-cart');
 const $cartAmount = $('.cart-amount');
+const $totalAmount = $('.checkout');
 const $body = $('body');
 const $closeCart = $('.close');
 
@@ -83,6 +84,7 @@ function updateCart() {
     }
     //update cart amount
     $cartAmount.text(totalQuantity);
+    updateTotalCost();
 }
 
 // Add product to cart
@@ -119,6 +121,32 @@ function changeQuantityCart(product_id, type) {
     });
     updateCart();
 }
+
+// Update total cost button
+function updateTotalCost() {
+    let totalPrice = 0;
+
+    // Each item in cart
+    for (let i = 0; i < cart.length; i++) {
+        let item = cart[i];
+        
+        // Find product
+        let currentProduct;
+        for (let j = 0; j < products.length; j++) {
+            if (products[j].id === item.product_id) {
+                currentProduct = products[j];
+                break;
+            }
+        }
+
+        // Calculate price and add to total
+        totalPrice += currentProduct.price * item.quantity;
+    }
+
+    // Update total cost button
+    $totalAmount.text('Check Out $' + totalPrice.toFixed(2));
+}
+
 
 // Hide or show cart
 $cartIcon.add($closeCart).on('click', function toggleCart() {
