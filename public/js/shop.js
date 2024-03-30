@@ -3,20 +3,28 @@ const $productsHTML = $('.products');
 const $cartHTML = $('.cart-list');
 const $cartIcon = $('.icon-cart');
 const $cartAmount = $('.cart-amount');
+const $searchOptions = $('.search-options');
 const $totalAmount = $('.checkout');
 const $body = $('body');
 const $closeCart = $('.close');
 
-let products = [];
-let cart = [];
+const productsPerPage = 28;
+
+let currentPage = 1;    // Current page user is on
+let productsAmount = 0; // Amount of products in current category
+let shownProduct = [];  // Products currently on screen
+let allProducts = [];   // All products in database
+let cart = [];          // Products in cart
+
+//////////////////////////////////////// Products
 
 // Updates product list
 function updateProducts() {
     $productsHTML.empty();
 
     // Loop through products and create HTML elements
-    for (let i = 0; i < products.length; i++) {
-        let currentProduct = products[i];
+    for (let i = 0; i < shownProduct.length; i++) {
+        let currentProduct = shownProduct[i];
         let $newProduct = $(`
             <div class="product-item" data-id="${currentProduct.id}">
                 <h2>${currentProduct.title}</h2>
@@ -32,6 +40,58 @@ function updateProducts() {
     }
 }
 
+// Gets correct amount of products for each page
+function getProductsPerPage(category) {
+    // Get total products in category to store amount in productsAmount
+    fetch(`https://dummyjson.com/`+category+`?skip=${0}&limit=${0}`)
+    .then(function handleResponse(res) {
+        return res.json();
+    })
+    .then(function handleData(data) {
+        productsAmount = parseInt(data.total);
+
+        // Get products for page
+        fetch(`https://dummyjson.com/`+category+`?skip=${(currentPage - 1) * productsPerPage}&limit=${productsPerPage}`)
+        .then(function handleResponse(res) {
+            return res.json();
+        })
+        .then(function handleData(data) {
+            shownProduct = data.products; 
+            updateProducts();
+        });
+    });
+}
+
+// Gets selected category and calls getProductsPerPage to update page
+function getCategory() {
+    selectedCategory = String($('.search-options').val());
+    
+    // If user wants to see all products
+    if (selectedCategory === 'all') {
+        // Get all products
+        fetch('https://dummyjson.com/products')
+        .then(res => res.json())
+        .then(data => {
+        shownProduct = data.products;
+        getProductsPerPage("products");
+        });
+    }
+    // if user is searching through sorting
+    else {
+        // Get products in a category
+        fetch('https://dummyjson.com/products/category/'+selectedCategory)
+        .then(res => res.json())
+        .then(data => {
+        shownProduct = data.products;
+        getProductsPerPage(String("products/category/"+selectedCategory));
+        });
+    }
+
+}
+
+////////////////////////////////////////
+
+//////////////////////////////////////// Cart
 // Update the cart
 function updateCart() {
     $cartHTML.empty();
@@ -56,9 +116,9 @@ function updateCart() {
 
         //find correct product
         let currentProduct;
-        for (let i = 0; i < products.length; i++) {
-            if (products[i].id === item.product_id) {
-                currentProduct = products[i];
+        for (let i = 0; i < allProducts.length; i++) {
+            if (allProducts[i].id === item.product_id) {
+                currentProduct = allProducts[i];
                 break;
             }
         }
@@ -73,9 +133,9 @@ function updateCart() {
                 <div class="cart-list-name">${currentProduct.title}</div>
                 <div class="cart-list-price">$${currentProduct.price * item.quantity}</div>
                 <div class="cart-list-quantity">
-                    <div class="cart-list-minus">-</div>
+                    <button class="cart-list-minus">-</button>
                     <span>${item.quantity}</span>
-                    <div class="cart-list-plus">+</div>
+                    <button class="cart-list-plus">+</button>
                 </div>
             </div>
         `);
@@ -132,9 +192,9 @@ function updateTotalCost() {
         
         // Find product
         let currentProduct;
-        for (let j = 0; j < products.length; j++) {
-            if (products[j].id === item.product_id) {
-                currentProduct = products[j];
+        for (let j = 0; j < allProducts.length; j++) {
+            if (allProducts[j].id === item.product_id) {
+                currentProduct = allProducts[j];
                 break;
             }
         }
@@ -147,10 +207,19 @@ function updateTotalCost() {
     $totalAmount.text('Check Out $' + totalPrice.toFixed(2));
 }
 
+////////////////////////////////////////
+
+//////////////////////////////////////// Event Handlers
 
 // Hide or show cart
 $cartIcon.add($closeCart).on('click', function toggleCart() {
     $body.toggleClass('showCart');
+});
+// Event listener for the search button
+$('.search-button').on('click', function() {
+    currentPage = 1;
+    $('.current-page').text('Page ' + currentPage);
+    getCategory();
 });
 // Event listener for adding to cart button
 $productsHTML.on('click', '.product-item-button', function addToCartHandler() {
@@ -163,16 +232,55 @@ $cartHTML.on('click', '.cart-list-minus, .cart-list-plus', function changeQuanti
     const type = $(this).hasClass('cart-list-plus') ? 'plus' : 'minus';
     changeQuantityCart(product_id, type);
 });
+// Event listener for previous page button
+$('.prev-page').on('click', function() {
+    if (currentPage > 1) {
+        currentPage -= 1;
+        $('.current-page').text('Page ' + currentPage);
+        getCategory();
+    }
+});
+// Event listener for next page button
+$('.next-page').on('click', function() {
+    if (currentPage < Math.ceil(productsAmount/productsPerPage)) {
+        currentPage += 1;
+        $('.current-page').text('Page ' + currentPage);
+        getCategory();
+    }
+});
+
+////////////////////////////////////////
 
 $(document).ready(function(){
-    // Get products from dummy API
-    fetch('https://dummyjson.com/products')
+    // Get amount of products
+    fetch(`https://dummyjson.com/products?skip=${0}&limit=${0}`)
     .then(function handleResponse(res) {
         return res.json();
     })
     .then(function handleData(data) {
-        products = data.products;
-        updateProducts();
-        updateCart()
+        productsAmount = parseInt(data.total); // Amount of products in a category
+
+         // Get all products and save to list
+        fetch(`https://dummyjson.com/products?skip=${0}&limit=${productsAmount}`)
+        .then(function handleResponse(res) {
+            return res.json();
+        })
+        .then(function handleData(data) {
+            allProducts = data.products;
+
+            // Update first page
+            getCategory();
+            updateCart()
+        });
     });
+
+    // Populate category box
+    fetch('https://dummyjson.com/products/categories')
+    .then(res => res.json())
+    .then(function(categories) {
+        categories.forEach(category => {
+            $searchOptions.append(`<option value="${category}">${category}</option>`);
+        });
+    });
+    
 });

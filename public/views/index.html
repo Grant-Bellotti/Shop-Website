@@ -14,18 +14,33 @@
 </head>
 
 <body>
+    <!-- Header -->
+
     <header class="wrapper-main">
+        <br>
         <h1>Product List</h1>
+        <div class="search">
+            <select class="search-options">
+                <option value="all" selected="selected">all</option>
+            </select>
+            <button class="search-button">Search</button>
+        </div>
+        
         <div class="icon-cart">
             <img src="../img/shopping-cart.png" alt="shopping cart" width="40px" height="40px">
-            <div class="cart-amount">0</div>
+            <span class="cart-amount">0</span>
         </div>
     </header>
+
+    <!-- Products -->
+
     <main class="wrapper-main">
         <div class="products">
 
         </div>
     </main>
+
+    <!-- Cart -->
     <div class="cart-tab ">
         <h1>Shopping Cart</h1>
         <div class="cart-list">
@@ -37,7 +52,15 @@
         </div>
     </div>
 
-    <script src="../js/shop.js"></script>
+    <!-- Change Page -->
+
+    <div class="change-page">
+        <button class="prev-page">Previous Page</button>
+        <span class="current-page">Page 1</span>
+        <button class="next-page">Next Page</button>
+    </div>
+    
     <script src="../js/authenticate.js"></script>
+    <script src="../js/shop.js"></script>
 </body>
 </html>

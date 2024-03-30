@@ -1,8 +1,41 @@
+/* Header */
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
+}
+header h1{
+    position: absolute;
+}
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    top: 0;
+}
+.search-options {
+    border: 1px solid var(--dark-blue); 
+    padding: 8px; 
+    border-radius: 4px; 
+    font-size: 1.6rem; 
+    cursor: pointer; 
+}
+.search-button {
+    background-color: var(--dark-blue); 
+    color: var(--off-white); 
+    border: none; 
+    font-size: 1.6rem;
+    padding: 10px 15px;
+    margin-left: 10px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    transition: all ease-in-out 200ms;
+}
+.search-button:hover {
+    background-color: var(--dark-blue-hover); 
 }
 .icon-cart {
     right: 0px;
@@ -25,6 +58,9 @@ header {
     top: 50%;
     right: -20px;
 }
+
+/* Products */
+
 .products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -78,7 +114,9 @@ header {
 .product-item-button:hover {
     background-color: var(--dark-blue-hover);
 }
-/* cart */
+
+/* Cart */
+
 .cart-tab {
     width: 400px;
     background-color: var(--dark-blue);
@@ -128,14 +166,19 @@ body.showCart .cart-tab {
     width: 80px;
     height: 80px;
 }
-.cart-list-quantity div {
+.cart-list-quantity button {
     display: inline-block;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     width: 25px;
     height: 25px;
     color: var(--off-white);
+    border-radius: 50%;
     cursor: pointer;
+    transition: all ease-in-out 200ms;
+}
+.cart-list-quantity button:hover {
+    background-color: var(--dark-blue-hover);
 }
 .cart-list-minus {
     text-align: center;
@@ -167,4 +210,29 @@ body.showCart .cart-tab {
 }
 .cart-tab-button .checkout:hover{
     background-color: var(--coral-hover);
+}
+
+/* Change Page */
+
+.change-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    margin-top: 20px;
+    padding-bottom: 10px;
+}
+
+.change-page button {
+    background-color: var(--dark-blue);
+    color: var(--off-white);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all ease-in-out 200ms;
+}
+.change-page button:hover {
+    background-color: var(--dark-blue-hover);
 }
