@@ -1,7 +1,7 @@
-let listProductHTML = document.querySelector('.listProduct');
-let listCartHTML = document.querySelector('.listCart');
+let listProductHTML = document.querySelector('.products');
+let listCartHTML = document.querySelector('.cart-list');
 let iconCart = document.querySelector('.icon-cart');
-let iconCartSpan = document.querySelector('.icon-cart span');
+let iconCartSpan = document.querySelector('.cart-amount');
 let body = document.querySelector('body');
 let closeCart = document.querySelector('.close');
 let products = [];
@@ -25,15 +25,15 @@ closeCart.addEventListener('click', () => {
             products.products.forEach(product => {
                 let newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
-                newProduct.classList.add('item');
+                newProduct.classList.add('product-item');
                 newProduct.innerHTML = 
                 `
                 <h2>${product.title}</h2>
-                <div class="img-box">
+                <div class="product-item-img-box">
                     <img src="${product.images[0]}" alt="">
                 </div>
-                <div class="price">$${product.price}</div>
-                <button class="addCart">Add To Cart</button>`;
+                <div class="product-item-price">$${product.price}</div>
+                <button class="product-item-button">Add To Cart</button>`;
                 listProductHTML.appendChild(newProduct);
                 index ++;
             });
@@ -41,7 +41,7 @@ closeCart.addEventListener('click', () => {
     }
     listProductHTML.addEventListener('click', (event) => {
         let positionClick = event.target;
-        if(positionClick.classList.contains('addCart')){
+        if(positionClick.classList.contains('product-item-button')){
             let id_product = positionClick.parentElement.dataset.id;
             addToCart(id_product);
         }
@@ -70,26 +70,23 @@ const addCartToHTML = () => {
         cart.forEach(item => {
             totalQuantity = totalQuantity +  item.quantity;
             let newItem = document.createElement('div');
-            newItem.classList.add('item');
+            newItem.classList.add('product-item-cart');
             newItem.dataset.id = item.product_id;
 
             let positionProduct = products.products.findIndex((value) => value.id == item.product_id);
             let info = products.products[positionProduct];
             listCartHTML.appendChild(newItem);
-            console.log(info);
             newItem.innerHTML = `
-            <div class="image">
-                    <img src="${info.images[0]}">
-                </div>
-                <div class="name">
-                ${info.title}
-                </div>
-                <div class="totalPrice">$${info.price * item.quantity}</div>
-                <div class="quantity">
-                    <div class="minus">-</div>
-                    <span>${item.quantity}</span>
-                    <div class="plus">+</div>
-                </div>
+            <div class="cart-list-image">
+                <img src="${info.images[0]}">
+            </div>
+            <div class="cart-list-name">${info.title}</div>
+            <div class="cart-list-price">$${info.price * item.quantity}</div>
+            <div class="cart-list-quantity">
+                <div class="cart-list-minus">-</div>
+                <span>${item.quantity}</span>
+                <div class="cart-list-plus">+</div>
+            </div>
             `;
         })
     }
@@ -98,10 +95,10 @@ const addCartToHTML = () => {
 
 listCartHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
-    if(positionClick.classList.contains('minus') || positionClick.classList.contains('plus')){
+    if(positionClick.classList.contains('cart-list-minus') || positionClick.classList.contains('cart-list-plus')){
         let product_id = positionClick.parentElement.parentElement.dataset.id;
         let type = 'minus';
-        if(positionClick.classList.contains('plus')){
+        if(positionClick.classList.contains('cart-list-plus')){
             type = 'plus';
         }
         changeQuantityCart(product_id, type);

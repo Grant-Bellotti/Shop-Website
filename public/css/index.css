@@ -4,9 +4,9 @@
 }
 :root {
   --dark-blue: #1A253A;
+  --dark-blue-hover: #2a3b5c;
   --dark-purple: #6c5b7b;
   --off-white: #fffff7;
-  --dark-blue-hover: #e2e2d6;
   --tan: #F9EBC7;
   --coral: #FF7F50;
   --coral-hover: #ff936c;
@@ -34,6 +34,7 @@ h2 {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   text-transform: capitalize;
+  text-align: center;
   padding-top: 10px;
 }
 h3 {
