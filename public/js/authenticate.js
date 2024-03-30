@@ -8,14 +8,12 @@ socket.on('welcome', function(message) {
         data: { },
         success: function(data1){
             if (data1.error == false) {
-                //update conversation with history
-                console.log(data1.message);
-                messages = messages.concat(data1.history);
+
             } 
             else {
                 //authenticate user and reload page to avoid any issues
                 console.log(data1.error);
-                $.post("/authenticate",{ username:'bob', password:'bob' },function(data2) {
+                $.post("/authenticate",{ username: message.id, password:'bob' },function(data2) {
                     location.reload();
                 });
             }
