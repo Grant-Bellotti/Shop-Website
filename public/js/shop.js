@@ -41,52 +41,69 @@ function updateProducts() {
 }
 
 // Gets correct amount of products for each page
-function getProductsPerPage(category) {
-    // Get total products in category to store amount in productsAmount
-    fetch(`https://dummyjson.com/`+category+`?skip=${0}&limit=${0}`)
-    .then(function handleResponse(res) {
-        return res.json();
-    })
-    .then(function handleData(data) {
-        productsAmount = parseInt(data.total);
-
-        // Get products for page
-        fetch(`https://dummyjson.com/`+category+`?skip=${(currentPage - 1) * productsPerPage}&limit=${productsPerPage}`)
+function getProductsPerPage(category, search=false) {
+    if (search == true) {
+        // Get total products in category to store amount in productsAmount
+        fetch(`https://dummyjson.com/`+category+`&skip=${0}&limit=${1}`)
         .then(function handleResponse(res) {
             return res.json();
         })
         .then(function handleData(data) {
-            shownProduct = data.products; 
-            updateProducts();
+            productsAmount = parseInt(data.total);
+
+            // Get products for page
+            fetch(`https://dummyjson.com/`+category+`&skip=${(currentPage - 1) * productsPerPage}&limit=${productsPerPage}`)
+            .then(function handleResponse(res) {
+                return res.json();
+            })
+            .then(function handleData(data) {
+                shownProduct = data.products; 
+                updateProducts();
+            });
         });
-    });
+    }
+    else {
+        // Get total products in category to store amount in productsAmount
+        fetch(`https://dummyjson.com/`+category+`?skip=${0}&limit=${1}`)
+        .then(function handleResponse(res) {
+            return res.json();
+        })
+        .then(function handleData(data) {
+            productsAmount = parseInt(data.total);
+
+            // Get products for page
+            fetch(`https://dummyjson.com/`+category+`?skip=${(currentPage - 1) * productsPerPage}&limit=${productsPerPage}`)
+            .then(function handleResponse(res) {
+                return res.json();
+            })
+            .then(function handleData(data) {
+                shownProduct = data.products; 
+                updateProducts();
+            });
+        });
+    }
 }
 
 // Gets selected category and calls getProductsPerPage to update page
 function getCategory() {
     selectedCategory = String($('.search-options').val());
-    
-    // If user wants to see all products
-    if (selectedCategory === 'all') {
-        // Get all products
-        fetch('https://dummyjson.com/products')
-        .then(res => res.json())
-        .then(data => {
-        shownProduct = data.products;
-        getProductsPerPage("products");
-        });
-    }
-    // if user is searching through sorting
-    else {
-        // Get products in a category
-        fetch('https://dummyjson.com/products/category/'+selectedCategory)
-        .then(res => res.json())
-        .then(data => {
-        shownProduct = data.products;
-        getProductsPerPage(String("products/category/"+selectedCategory));
-        });
-    }
+    searchVal = String($('.search-input').val());
 
+    // If user isn't searching with text
+    if (searchVal.trim() === "") {
+        // If user wants to see all products
+        if (selectedCategory === 'all') {
+            getProductsPerPage("products");
+        }
+        // if user is searching through sorting
+        else {
+            getProductsPerPage(String("products/category/"+selectedCategory));
+        }
+    }
+    // If user is trying to search
+    else {
+        getProductsPerPage(String("products/search?q="+searchVal), true);
+    }
 }
 
 ////////////////////////////////////////
@@ -215,6 +232,14 @@ function updateTotalCost() {
 $cartIcon.add($closeCart).on('click', function toggleCart() {
     $body.toggleClass('showCart');
 });
+// Event listener for search input
+$('.search-input').on('click', function() {
+    searchVal = String($('.search-input').val(""));
+});
+// Event listener for category input
+$('.search-options').on('click', function() {
+    searchVal = String($('.search-input').val(""));
+});
 // Event listener for the search button
 $('.search-button').on('click', function() {
     currentPage = 1;
@@ -253,7 +278,7 @@ $('.next-page').on('click', function() {
 
 $(document).ready(function(){
     // Get amount of products
-    fetch(`https://dummyjson.com/products?skip=${0}&limit=${0}`)
+    fetch(`https://dummyjson.com/products?skip=${0}&limit=${1}`)
     .then(function handleResponse(res) {
         return res.json();
     })
