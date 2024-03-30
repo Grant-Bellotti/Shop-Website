@@ -7,6 +7,7 @@ var passport = require("passport");
 var path = require("path");
 var session = require("express-session");
 let http = require('http');
+const os = require('os');
 
 var setUpPassport = require("./resources/setuppassport");
 
@@ -56,7 +57,22 @@ io.on('connection', function(socket) {
     });
 });
 //////////////////////////////
+const networkInterfaces = os.networkInterfaces();
+
+// Find the internal IP address
+let internalIpAddress;
+for (const interfaceName in networkInterfaces) {
+    const networkInterface = networkInterfaces[interfaceName];
+    for (const interfaceInfo of networkInterface) {
+        if (!interfaceInfo.internal && interfaceInfo.family === 'IPv4') {
+            internalIpAddress = interfaceInfo.address;
+            break;
+        }
+    }
+    if (internalIpAddress) break;
+}
 
 var port = process.env.PORT || 3000;
 server.listen(port);
 console.log("server listening on port " + port);
+console.log('Internal IP Address:', internalIpAddress);
