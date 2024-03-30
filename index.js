@@ -74,5 +74,5 @@ for (const interfaceName in networkInterfaces) {
 
 var port = process.env.PORT || 3000;
 server.listen(port);
-console.log("server listening on port " + port);
 console.log('Internal IP Address:', internalIpAddress);
+console.log("server listening on port " + port);
