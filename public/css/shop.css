@@ -21,6 +21,8 @@ header h1{
     padding: 8px; 
     border-radius: 10px; 
     font-size: 1.6rem; 
+    width: 200px;
+    margin-left: 5px;
     cursor: pointer; 
 }
 .search-input {
@@ -28,8 +30,9 @@ header h1{
     padding: 8px;
     border-radius: 10px;
     font-size: 1.6rem;
-    cursor: pointer;
-    width: 200px; /* Adjust width as needed */
+    width: 200px;
+    margin-right: 5px; 
+    cursor: pointer; 
 }
 .search-button {
     background-color: var(--dark-blue); 
@@ -38,6 +41,17 @@ header h1{
     font-size: 1.6rem;
     padding: 10px 15px;
     margin-left: 10px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    transition: all ease-in-out 200ms;
+}
+.search-button-home {
+    background-color: var(--dark-blue); 
+    color: var(--off-white); 
+    border: none; 
+    font-size: 1.6rem;
+    padding: 10px 15px;
+    margin-right: 10px; 
     border-radius: 10px; 
     cursor: pointer; 
     transition: all ease-in-out 200ms;

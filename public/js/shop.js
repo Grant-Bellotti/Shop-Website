@@ -246,6 +246,18 @@ $('.search-button').on('click', function() {
     $('.current-page').text('Page ' + currentPage);
     getCategory();
 });
+// Event listener for the home button
+$('.search-button-home').on('click', function() {
+    location.reload();
+});
+// Event listener for pressing Enter key in the input field
+$('.search-input').on('keypress', function(event) {
+    if (event.which === 13) { // Check if enter pressed
+        currentPage = 1;
+        $('.current-page').text('Page ' + currentPage);
+        getCategory();
+    }
+});
 // Event listener for adding to cart button
 $productsHTML.on('click', '.product-item-button', function addToCartHandler() {
     const product_id = $(this).parent().data('id');
