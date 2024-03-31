@@ -43,7 +43,7 @@ function updateProducts() {
 // Gets correct amount of products for each page
 function getProductsPerPage(category, search=false) {
     if (search == true) {
-        // Get total products in category to store amount in productsAmount
+        // Get total products in category to store amount in productsAmount, which is used for deciding how many pages there are
         fetch(`https://dummyjson.com/`+category+`&skip=${0}&limit=${1}`)
         .then(function handleResponse(res) {
             return res.json();
